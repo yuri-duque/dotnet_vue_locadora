@@ -2,6 +2,7 @@
 using Domain.Models;
 using Repository.Models;
 using System;
+using System.Linq;
 
 namespace Service.Models
 {
@@ -18,22 +19,34 @@ namespace Service.Models
 
         public object BuscarTodos()
         {
-            throw new NotImplementedException();
+            return _filmeRepository.GetAll().ToList();
         }
 
         public object Salvar(Filme filme)
         {
-            throw new NotImplementedException();
+            _filmeRepository.Save(filme);
+
+            return filme;
         }
 
         public object Atualizar(Filme filme, int id)
         {
-            throw new NotImplementedException();
+            _filmeRepository.VerificarExistencia("Filme não encontrado!", id);
+
+            filme.Id = id;
+
+            _filmeRepository.Update(filme);
+
+            return filme;
         }
 
-        public object Deletar(int id)
+        public void Deletar(int id)
         {
-            throw new NotImplementedException();
+            _filmeRepository.VerificarExistencia("Filme não encontrado!", id);
+
+            // verificar locacoes
+
+            _filmeRepository.Delete(x => x.Id == id);
         }
     }
 }

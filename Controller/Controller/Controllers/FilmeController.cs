@@ -73,9 +73,9 @@ namespace Controller.Controllers
         {
             try
             {
-                var response = _filmeService.Deletar(id);
+                _filmeService.Deletar(id);
 
-                return Ok(response);
+                return Ok();
             }
             catch (Exception ex)
             {
