@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Domain.Models
 {
     public class Locacao
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public DateTime DataLocacao { get; set; }
 
@@ -20,6 +19,35 @@ namespace Domain.Models
         [Required]
         public int IdCliente { get; set; }
         public Cliente Cliente { get; set; }
+
+
+        [Required]
+        public int IdFilme { get; set; }
+        public Filme Filme { get; set; }
+
+        #endregion
+
+        #region Mapeamento
+
+        public static void Map(ModelBuilder modelBuilder)
+        {
+            var map = modelBuilder.Entity<Locacao>();
+            map.HasKey(x => new { x.IdCliente, x.IdFilme });
+
+            map
+                .HasOne(x => x.Cliente)
+                .WithMany(y => y.Locacoes)
+                .HasForeignKey(x => x.IdCliente)
+                .HasPrincipalKey(y => y.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            map
+                .HasOne(x => x.Filme)
+                .WithMany(y => y.Locacoes)
+                .HasForeignKey(x => x.IdFilme)
+                .HasPrincipalKey(y => y.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
 
         #endregion
     }

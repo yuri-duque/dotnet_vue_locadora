@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,10 +7,10 @@ namespace Domain.Models
 {
     public class Cliente
     {
-        [Key]
+        [Required]
         public int Id { get; set; }
 
-        [Key, Required, MaxLength(11), MinLength(11)]
+        [Required, MaxLength(11), MinLength(11)]
         public string CPF { get; set; }
 
         [Required, MaxLength(200)]
@@ -21,6 +22,17 @@ namespace Domain.Models
         #region Relacionamento
 
         public IList<Locacao> Locacoes { get; set; }
+
+        #endregion
+
+        #region Mapeamento
+
+        public static void Map(ModelBuilder modelBuilder)
+        {
+            var map = modelBuilder.Entity<Cliente>();
+            map.HasKey(x => new { x.Id, x.CPF });
+            map.Property(x => x.Id).ValueGeneratedOnAdd();
+        }
 
         #endregion
     }
