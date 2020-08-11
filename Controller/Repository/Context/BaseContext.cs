@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Context
 {
@@ -10,9 +11,13 @@ namespace Repository.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            //Expense.Map(modelBuilder);
+            Cliente.Map(modelBuilder);
+            Filme.Map(modelBuilder);
+            Locacao.Map(modelBuilder);
         }
 
-        //public DbSet<Expense> expenses { get; set; }
+        public DbSet<Cliente> clientes { get; set; }
+        public DbSet<Filme> filmes { get; set; }
+        public DbSet<Locacao> locacoes { get; set; }
     }
 }
