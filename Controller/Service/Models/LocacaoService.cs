@@ -2,6 +2,7 @@
 using Domain.Models;
 using Repository.Models;
 using System;
+using System.Linq;
 
 namespace Service.Models
 {
@@ -18,22 +19,42 @@ namespace Service.Models
 
         public object BuscarTodos()
         {
-            throw new NotImplementedException();
+            return _locacaoRepository.GetAll().ToList();
         }
 
-        public object Salvar(Locacao locacao)
+        public object Alugar(Locacao locacao)
         {
-            throw new NotImplementedException();
+            // verificar se o filme não está alugado
+
+            locacao.DataLocacao = DateTime.Now;
+
+            _locacaoRepository.Save(locacao);
+
+            return locacao;
         }
 
-        public object Atualizar(Locacao locacao, int id)
+        public object Devolver(Locacao locacao, int idCliente, int idFilme)
         {
-            throw new NotImplementedException();
+            _locacaoRepository.VerificarExistencia("Locação não encontrada", idCliente, idFilme);
+
+            // verificar se o filme já não foi devolvido
+
+            locacao.IdFilme = idFilme;
+            locacao.IdCliente = idCliente;
+            locacao.DataLocacao = DateTime.Now;
+
+            _locacaoRepository.Update(locacao);
+
+            return locacao;
         }
 
-        public object Deletar(int id)
+        public void Deletar(int idCliente, int idFilme)
         {
-            throw new NotImplementedException();
+            _locacaoRepository.VerificarExistencia("Locação não encontrada", idCliente, idFilme);
+
+            // verificar se o filme não está alugado
+
+            _locacaoRepository.Delete(x => x.IdCliente == idCliente && x.IdFilme == idFilme);
         }
     }
 }

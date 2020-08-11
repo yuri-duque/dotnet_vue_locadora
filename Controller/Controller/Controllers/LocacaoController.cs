@@ -33,14 +33,14 @@ namespace Controller.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(Locacao locacao)
+        public ActionResult Alugar(Locacao locacao)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _locacaoService.Salvar(locacao);
+                var response = _locacaoService.Alugar(locacao);
 
                 return Ok(response);
             }
@@ -51,14 +51,14 @@ namespace Controller.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update(Locacao locacao, int id)
+        public ActionResult Devolver(Locacao locacao, int idCliente, int idFilme)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _locacaoService.Atualizar(locacao, id);
+                var response = _locacaoService.Devolver(locacao, idCliente, idFilme);
 
                 return Ok(response);
             }
@@ -68,14 +68,14 @@ namespace Controller.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        [HttpDelete]
+        public ActionResult Delete(int idCliente, int idFilme)
         {
             try
             {
-                var response = _locacaoService.Deletar(id);
+                _locacaoService.Deletar(idCliente, idFilme);
 
-                return Ok(response);
+                return Ok();
             }
             catch (Exception ex)
             {
