@@ -23,19 +23,41 @@ namespace Service.Models
             return _clienteRepository.GetAll().ToList();
         }
 
-        public object Salvar(Cliente cliente)
+        public Cliente Salvar(Cliente cliente)
         {
-            throw new NotImplementedException();
+            _clienteRepository.Save(cliente);
+
+            return cliente;
         }
 
         public object Atualizar(Cliente cliente, int id)
         {
-            throw new NotImplementedException();
+            VerificarExistenciaCliente(id);
+
+            cliente.Id = id;
+
+            _clienteRepository.Update(cliente);
+
+            return cliente;
         }
 
-        public object Deletar(int id)
+        public void Deletar(int id)
         {
-            throw new NotImplementedException();
+            VerificarExistenciaCliente(id);
+
+            // verificar locacoes
+
+            _clienteRepository.Delete(x => x.Id == id);
+        }
+
+        private bool VerificarExistenciaCliente(int id)
+        {
+            var clienteBase = _clienteRepository.Find(id);
+
+            if (clienteBase != null)
+                throw new Exception("Cliente não encontrado");
+
+            return true;
         }
     }
 }
