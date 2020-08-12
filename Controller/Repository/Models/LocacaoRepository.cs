@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Repository.Context;
 using System;
+using System.Linq;
 
 namespace Repository.Models
 {
@@ -8,9 +9,9 @@ namespace Repository.Models
     {
         public LocacaoRepository(BaseContext ctx) : base(ctx) { }
 
-        public Locacao EncontrarLocacao(int idCliente, int idFilme)
+        public Locacao EncontrarLocacao(int id)
         {
-            var result = Find(idCliente, idFilme);
+            var result = Find(id);
 
             if (result is null)
                 throw new Exception("Locacao não encontrada! Verifique se IdCliente e o IdFilme estão corretos.");
@@ -18,6 +19,18 @@ namespace Repository.Models
                 Detached(result);
 
             return result;
+        }
+
+        public IQueryable<Locacao> GetLocacoesAtivasByCliente(int idCliente)
+        {
+            return GetAll()
+                .Where(x => !x.FilmeDevolvido && x.IdCliente == idCliente);
+        }
+
+        public IQueryable<Locacao> GetLocacoesAtivasByFilme(int idFilme)
+        {
+            return GetAll()
+                .Where(x => !x.FilmeDevolvido && x.IdFilme == idFilme);
         }
     }
 }

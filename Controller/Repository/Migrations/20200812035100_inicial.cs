@@ -20,8 +20,7 @@ namespace Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_clientes", x => new { x.Id, x.CPF });
-                    table.UniqueConstraint("AK_clientes_Id", x => x.Id);
+                    table.PrimaryKey("PK_clientes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,26 +31,28 @@ namespace Repository.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Titulo = table.Column<string>(maxLength: 100, nullable: false),
                     ClassificacaoIndicativa = table.Column<int>(nullable: false),
-                    Lancamento = table.Column<short>(nullable: false)
+                    Lancamento = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_filmes", x => new { x.Id, x.Titulo });
-                    table.UniqueConstraint("AK_filmes_Id", x => x.Id);
+                    table.PrimaryKey("PK_filmes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "locacoes",
                 columns: table => new
                 {
-                    IdCliente = table.Column<int>(nullable: false),
-                    IdFilme = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DataLocacao = table.Column<DateTime>(nullable: false),
-                    DataDevolucao = table.Column<DateTime>(nullable: false)
+                    DataDevolucao = table.Column<DateTime>(nullable: false),
+                    FilmeDevolvido = table.Column<bool>(nullable: false),
+                    IdCliente = table.Column<int>(nullable: false),
+                    IdFilme = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_locacoes", x => new { x.IdCliente, x.IdFilme });
+                    table.PrimaryKey("PK_locacoes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_locacoes_clientes_IdCliente",
                         column: x => x.IdCliente,
@@ -65,6 +66,23 @@ namespace Repository.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_clientes_CPF",
+                table: "clientes",
+                column: "CPF",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_filmes_Titulo",
+                table: "filmes",
+                column: "Titulo",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_locacoes_IdCliente",
+                table: "locacoes",
+                column: "IdCliente");
 
             migrationBuilder.CreateIndex(
                 name: "IX_locacoes_IdFilme",

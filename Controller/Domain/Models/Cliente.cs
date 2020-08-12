@@ -7,7 +7,7 @@ namespace Domain.Models
 {
     public class Cliente
     {
-        [Required]
+        [Key]
         public int Id { get; set; }
 
         [Required, MaxLength(11), MinLength(11)]
@@ -30,8 +30,9 @@ namespace Domain.Models
         public static void Map(ModelBuilder modelBuilder)
         {
             var map = modelBuilder.Entity<Cliente>();
-            map.HasKey(x => new { x.Id, x.CPF });
             map.Property(x => x.Id).ValueGeneratedOnAdd();
+
+            map.HasIndex(x => x.CPF).IsUnique();
         }
 
         #endregion

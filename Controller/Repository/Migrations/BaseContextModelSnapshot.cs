@@ -24,6 +24,7 @@ namespace Repository.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CPF")
+                        .IsRequired()
                         .HasColumnType("varchar(11) CHARACTER SET utf8mb4")
                         .HasMaxLength(11);
 
@@ -35,7 +36,10 @@ namespace Repository.Migrations
                         .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
-                    b.HasKey("Id", "CPF");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CPF")
+                        .IsUnique();
 
                     b.ToTable("clientes");
                 });
@@ -46,27 +50,29 @@ namespace Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Titulo")
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
-                        .HasMaxLength(100);
-
                     b.Property<int>("ClassificacaoIndicativa")
                         .HasColumnType("int");
 
                     b.Property<bool>("Lancamento")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("Id", "Titulo");
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Titulo")
+                        .IsUnique();
 
                     b.ToTable("filmes");
                 });
 
             modelBuilder.Entity("Domain.Models.Locacao", b =>
                 {
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdFilme")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataDevolucao")
@@ -78,7 +84,15 @@ namespace Repository.Migrations
                     b.Property<bool>("FilmeDevolvido")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("IdCliente", "IdFilme");
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdFilme")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdCliente");
 
                     b.HasIndex("IdFilme");
 
@@ -90,14 +104,12 @@ namespace Repository.Migrations
                     b.HasOne("Domain.Models.Cliente", "Cliente")
                         .WithMany("Locacoes")
                         .HasForeignKey("IdCliente")
-                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Filme", "Filme")
                         .WithMany("Locacoes")
                         .HasForeignKey("IdFilme")
-                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

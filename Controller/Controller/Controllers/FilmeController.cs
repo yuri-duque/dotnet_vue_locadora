@@ -51,14 +51,14 @@ namespace Controller.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update(FilmeDTO filmeDTO, int id, string titulo)
+        public ActionResult Update(FilmeDTO filmeDTO, int id)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _filmeService.Atualizar(filmeDTO, id, titulo);
+                var response = _filmeService.Atualizar(filmeDTO, id);
 
                 return Ok(response);
             }
@@ -69,13 +69,28 @@ namespace Controller.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id, string titulo)
+        public ActionResult Delete(int id)
         {
             try
             {
-                _filmeService.Deletar(id, titulo);
+                _filmeService.Deletar(id);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("relatorio")]
+        public ActionResult Relatorio(bool isNuncaAlugados, bool? maisAlugados = null, DateTime? PeriodoMaisAlugados = null, int? quantidadeItens = null)
+        {
+            try
+            {
+                var response = _filmeService.Relatorio(isNuncaAlugados, maisAlugados, PeriodoMaisAlugados, quantidadeItens);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

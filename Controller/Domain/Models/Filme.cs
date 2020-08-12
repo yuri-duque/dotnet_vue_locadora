@@ -10,7 +10,7 @@ namespace Domain.Models
         [Key]
         public int Id { get; set; }
 
-        [Key, Required, MaxLength(100)]
+        [Required, MaxLength(100)]
         public string Titulo { get; set; }
 
         [Required]
@@ -30,8 +30,9 @@ namespace Domain.Models
         public static void Map(ModelBuilder modelBuilder)
         {
             var map = modelBuilder.Entity<Filme>();
-            map.HasKey(x => new { x.Id, x.Titulo });
             map.Property(x => x.Id).ValueGeneratedOnAdd();
+
+            map.HasIndex(x => x.Titulo).IsUnique();
         }
 
         #endregion

@@ -5,6 +5,7 @@ namespace Domain.DTO
 {
     public class LocacaoDTO
     {
+        public int Id { get; set; }
         public ClienteDTO Cliente { get; set; }
         public FilmeDTO Filme { get; set; }
         public DateTime DataLocacao { get; set; }
@@ -14,6 +15,8 @@ namespace Domain.DTO
 
     public class LocacaoAlugarDTO
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "O {0} é obrigatório!")]
         public int IdCliente { get; set; }
 

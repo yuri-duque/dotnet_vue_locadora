@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.DTO;
+using Domain.Enum;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Models;
@@ -37,15 +38,18 @@ namespace Service.Models
             return listDTO;
         }
 
-        public Locacao Alugar(LocacaoAlugarDTO locacaoDTO)
+        public LocacaoDTO Alugar(LocacaoAlugarDTO locacaoDTO)
         {
-            var filme = _filmeRepository.GetById(locacaoDTO.IdFilme);
+            var filme = _filmeRepository.Find(locacaoDTO.IdFilme);
             if(filme == null)
                 throw new Exception("Filme não encontrado!");
 
-            var cliente = _clienteRepository.GetById(locacaoDTO.IdFilme);
+            var cliente = _clienteRepository.Find(locacaoDTO.IdCliente);
             if (cliente == null)
                 throw new Exception("Cliente não encontrado!");
+
+            if (!CompararIdadeComClassificacao(cliente.DataNascimento, filme.ClassificacaoIndicativa))
+                throw new Exception("Este filme não é indicado para a fixa etária do cliente!");
 
             var locacao = _mapper.Map<Locacao>(locacaoDTO);
             locacao.DataLocacao = DateTime.Now;
@@ -57,49 +61,75 @@ namespace Service.Models
 
             _locacaoRepository.Save(locacao);
 
-            return locacao;
+            locacao.Cliente = cliente;
+            locacao.Filme = filme;
+
+            return _mapper.Map<LocacaoDTO>(locacao);
         }
 
-        public Locacao Atualizar(LocacaoAtualizarDTO locacaoDTO, int idCliente, int idFilme)
+        public LocacaoDTO Atualizar(LocacaoAtualizarDTO locacaoDTO, int id)
         {
-            _locacaoRepository.EncontrarLocacao(idCliente, idFilme);
+            _locacaoRepository.EncontrarLocacao(id);
 
             var locacao = _mapper.Map<Locacao>(locacaoDTO);
+            locacao.Id = id;
 
             _locacaoRepository.Update(locacao);
 
-            return locacao;
+            locacao.Filme = _filmeRepository.Find(locacaoDTO.IdFilme);
+            locacao.Cliente = _clienteRepository.Find(locacaoDTO.IdFilme);
+
+            return _mapper.Map<LocacaoDTO>(locacao);
         }
 
-        public Locacao Devolver(LocacaoAlugarDTO locacaoDTO)
+        public LocacaoDTO Devolver(LocacaoAlugarDTO locacaoDTO)
         {
-            var filme = _filmeRepository.GetById(locacaoDTO.IdFilme);
+            var filme = _filmeRepository.Find(locacaoDTO.IdFilme);
             if (filme == null)
                 throw new Exception("Filme não encontrado!");
 
-            var cliente = _clienteRepository.GetById(locacaoDTO.IdFilme);
+            var cliente = _clienteRepository.Find(locacaoDTO.IdFilme);
             if (cliente == null)
                 throw new Exception("Cliente não encontrado!");
 
-            var locacao = _locacaoRepository.EncontrarLocacao(locacaoDTO.IdCliente, locacaoDTO.IdFilme);
-            if(locacao.FilmeDevolvido)
+            var locacao = _locacaoRepository.EncontrarLocacao(locacaoDTO.Id);
+            if (locacao.FilmeDevolvido)
                 throw new Exception("Essa locação já foi devolvida!");
 
             locacao.FilmeDevolvido = true;
 
             _locacaoRepository.Update(locacao);
 
-            return locacao;
+            locacao.Cliente = cliente;
+            locacao.Filme = filme;
+
+            return _mapper.Map<LocacaoDTO>(locacao);
         }
 
-        public void Deletar(int idCliente, int idFilme)
+        public void Deletar(int id)
         {
-            var locacao = _locacaoRepository.EncontrarLocacao(idCliente, idFilme);
+            var locacao = _locacaoRepository.EncontrarLocacao(id);
 
             if (!locacao.FilmeDevolvido)
-                throw new Exception("Esse Filme está alugado! Não é possivel excluir ele agora.");
+                throw new Exception("Não doi possivel excluir essa locação, pois ela ainda não foi devolvida.");
 
-            _locacaoRepository.Delete(x => x.IdCliente == idCliente && x.IdFilme == idFilme);
+            _locacaoRepository.Delete(x => x.Id == id);
+        }
+
+        private bool CompararIdadeComClassificacao(DateTime dataNascimento, EnumClassificacaoIndicativa classificacao)
+        {
+            int idade = DateTime.Now.Year - dataNascimento.Year;
+            if (DateTime.Now.DayOfYear < dataNascimento.DayOfYear)
+            {
+                idade--;
+            }
+
+            int classificacaoInt = Convert.ToInt32(classificacao);
+
+            if (idade >= classificacaoInt)
+                return true;
+
+            return false;
         }
     }
 }

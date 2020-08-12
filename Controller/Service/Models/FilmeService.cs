@@ -11,11 +11,13 @@ namespace Service.Models
     public class FilmeService
     {
         private readonly FilmeRepository _filmeRepository;
+        private readonly LocacaoRepository _locacaoRepository;
         private readonly IMapper _mapper;
 
-        public FilmeService(FilmeRepository filmeRepository, IMapper mapper)
+        public FilmeService(FilmeRepository filmeRepository, LocacaoRepository locacaoRepository, IMapper mapper)
         {
             _filmeRepository = filmeRepository;
+            _locacaoRepository = locacaoRepository;
             _mapper = mapper;
         }
 
@@ -28,7 +30,7 @@ namespace Service.Models
             return listDTO;
         }
 
-        public object Salvar(FilmeDTO filmeDTO)
+        public FilmeDTO Salvar(FilmeDTO filmeDTO)
         {
             var filme = _filmeRepository.GetByTitulo(filmeDTO.Titulo);
             if (filme != null)
@@ -38,37 +40,44 @@ namespace Service.Models
 
             _filmeRepository.Save(filme);
 
-            return filme;
+            return _mapper.Map<FilmeDTO>(filme);
         }
 
-        public object Atualizar(FilmeDTO filmeDTO, int id, string titulo)
+        public FilmeDTO Atualizar(FilmeDTO filmeDTO, int id)
         {
-            _filmeRepository.EncontrarFilme(id, titulo);
+            var filme = _filmeRepository.EncontrarFilme(id);
 
-            if (!titulo.Equals(filmeDTO.Titulo))
+            if (!filme.Titulo.Equals(filmeDTO.Titulo))
             {
-                var filmeBase = _filmeRepository.GetByTitulo(filmeDTO.Titulo);
-                if (filmeBase != null)
+                filme = _filmeRepository.GetByTitulo(filmeDTO.Titulo);
+                if (filme != null)
                     throw new Exception("Já existe um filme cadastrado com esse titulo!");
-            }            
+            }
 
-            var filme = _mapper.Map<Filme>(filmeDTO);
+            filme = _mapper.Map<Filme>(filmeDTO);
             filme.Id = id;
 
             _filmeRepository.Update(filme);
 
-            return filme;
+            return _mapper.Map<FilmeDTO>(filme);
         }
 
-        public void Deletar(int id, string titulo)
+        public void Deletar(int id)
         {
-            _filmeRepository.EncontrarFilme(id, titulo);
+            _filmeRepository.EncontrarFilme(id);
 
-            var filme = _filmeRepository.GetLocacoesAtivasByIdFilme(id);
-            if(filme.Locacoes.Any())
-                throw new Exception($"Não é possivel excluir esse filme, pois existem '{filme.Locacoes.Count()}' locações que não foram devolvidas!");
+            var Locaoes = _locacaoRepository.GetLocacoesAtivasByFilme(id);
+            if (Locaoes != null && Locaoes.Any())
+                throw new Exception($"Não é possivel excluir esse filme, pois existem '{Locaoes.Count()}' locações que não foram devolvidas!");
 
             _filmeRepository.Delete(x => x.Id == id);
+        }
+
+        public IList<FilmeDTO> Relatorio(bool isNuncaAlugados, bool? maisAlugados = null, DateTime? periodoMaisAlugados = null, int? quantidadeFilmes = null)
+        {
+            var list = _filmeRepository.Relatorio(isNuncaAlugados, maisAlugados, periodoMaisAlugados, quantidadeFilmes).ToList();
+
+            return _mapper.Map<List<FilmeDTO>>(list);
         }
     }
 }

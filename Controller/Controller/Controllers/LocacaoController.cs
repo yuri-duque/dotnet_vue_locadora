@@ -68,15 +68,15 @@ namespace Controller.Controllers
             }
         }
 
-        [HttpPut]
-        public ActionResult Atualizar([FromBody]LocacaoAtualizarDTO locacao, int idCliente, int idFilme)
+        [HttpPut("{id}")]
+        public ActionResult Atualizar([FromBody]LocacaoAtualizarDTO locacao, int id)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _locacaoService.Atualizar(locacao, idCliente, idFilme);
+                var response = _locacaoService.Atualizar(locacao, id);
 
                 return Ok(response);
             }
@@ -86,12 +86,12 @@ namespace Controller.Controllers
             }
         }
 
-        [HttpDelete]
-        public ActionResult Delete(int idCliente, int idFilme)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
             try
             {
-                _locacaoService.Deletar(idCliente, idFilme);
+                _locacaoService.Deletar(id);
 
                 return Ok();
             }

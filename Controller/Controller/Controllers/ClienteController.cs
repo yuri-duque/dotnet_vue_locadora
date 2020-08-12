@@ -69,13 +69,28 @@ namespace Controller.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id, string CPF)
+        public ActionResult Delete(int id)
         {
             try
             {
-                _clienteService.Deletar(id, CPF);
+                _clienteService.Deletar(id);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("relatorio")]
+        public ActionResult Relatorio(bool isAtrasados, int? indexRecordistas)
+        {
+            try
+            {
+                var response = _clienteService.Relatorio(isAtrasados, indexRecordistas);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

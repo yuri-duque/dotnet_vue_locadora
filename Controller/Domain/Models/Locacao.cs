@@ -6,6 +6,9 @@ namespace Domain.Models
 {
     public class Locacao
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public DateTime DataLocacao { get; set; }
 
@@ -32,20 +35,18 @@ namespace Domain.Models
         public static void Map(ModelBuilder modelBuilder)
         {
             var map = modelBuilder.Entity<Locacao>();
-            map.HasKey(x => new { x.IdCliente, x.IdFilme });
+            map.Property(x => x.Id).ValueGeneratedOnAdd();
 
             map
                 .HasOne(x => x.Cliente)
                 .WithMany(y => y.Locacoes)
                 .HasForeignKey(x => x.IdCliente)
-                .HasPrincipalKey(y => y.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
             map
                 .HasOne(x => x.Filme)
                 .WithMany(y => y.Locacoes)
                 .HasForeignKey(x => x.IdFilme)
-                .HasPrincipalKey(y => y.Id)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

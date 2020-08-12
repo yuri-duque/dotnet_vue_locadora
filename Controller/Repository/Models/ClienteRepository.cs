@@ -10,19 +10,16 @@ namespace Repository.Models
     {
         public ClienteRepository(BaseContext ctx) : base(ctx) { }
 
-        public void EncontrarCliente(int id, string CPF)
+        public Cliente EncontrarCliente(int id)
         {
-            var result = Find(id, CPF);
+            var result = Find(id);
 
             if (result is null)
                 throw new Exception("Cliente não encontrado! Verifique se Id e o CPF estão corretos.");
             else
                 Detached(result);
-        }
 
-        public Cliente GetById(int id)
-        {
-            return GetAll().FirstOrDefault(x => x.Id == id);
+            return result;
         }
 
         public Cliente GetByCPF(string CPF)
@@ -30,14 +27,26 @@ namespace Repository.Models
             return GetAll().FirstOrDefault(x => x.CPF.Equals(CPF));
         }
 
-        public Cliente GetLocacoesAtivasByCliente(int id)
+        public IQueryable<Cliente> Relatorio(bool isAtrasados, int? indexRecordistas)
         {
-            return GetAll()
-                .Include(x => x.Locacoes)
-                .SelectMany(x => x.Locacoes)
-                .Where(x => !x.FilmeDevolvido)
-                .Select(x => x.Cliente)
-                .FirstOrDefault(x => x.Id == id);
+            var list = GetAll();
+
+            if (isAtrasados)
+            {
+                list = list
+                    .SelectMany(x => x.Locacoes)
+                    .Where(x => !x.FilmeDevolvido && x.DataDevolucao < DateTime.Now)
+                    .Select(x => x.Cliente);
+            }
+
+            if(indexRecordistas != null && indexRecordistas > 0)
+            {
+                list = list
+                    .Include(x => x.Locacoes)
+                    .OrderBy(x => x.Locacoes.Count());
+            }
+
+            return list;
         }
     }
 }
