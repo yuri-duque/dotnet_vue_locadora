@@ -32,7 +32,7 @@ namespace Service.Models
 
         public object Atualizar(Cliente cliente, int id)
         {
-            VerificarExistenciaCliente(id);
+            _clienteRepository.VerificarExistencia("Cliente não encontrado!", id);
 
             cliente.Id = id;
 
@@ -43,21 +43,11 @@ namespace Service.Models
 
         public void Deletar(int id)
         {
-            VerificarExistenciaCliente(id);
+            _clienteRepository.VerificarExistencia("Cliente não encontrado!", id);
 
             // verificar locacoes
 
             _clienteRepository.Delete(x => x.Id == id);
-        }
-
-        private bool VerificarExistenciaCliente(int id)
-        {
-            var clienteBase = _clienteRepository.Find(id);
-
-            if (clienteBase != null)
-                throw new Exception("Cliente não encontrado");
-
-            return true;
         }
     }
 }
