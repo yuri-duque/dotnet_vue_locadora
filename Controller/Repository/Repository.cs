@@ -19,6 +19,11 @@ namespace Repository
             _ctx.Dispose();
         }
 
+        public void Detached(object obj)
+        {
+            _ctx.Entry(obj).State = EntityState.Detached;
+        }
+
         public IQueryable<TEntity> GetAll()
         {
             return _ctx.Set<TEntity>();
@@ -68,14 +73,6 @@ namespace Repository
                 .ForEach(del => _ctx.Set<TEntity>().Remove(del));
 
             _ctx.SaveChanges();
-        }
-
-        public void VerificarExistencia(string erroMessage, params object[] key)
-        {
-            var result = Find(key);
-
-            if (result != null)
-                throw new Exception(erroMessage);
         }
     }
 }

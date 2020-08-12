@@ -51,14 +51,14 @@ namespace Controller.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update(Filme filme, int id)
+        public ActionResult Update(Filme filme, int id, string titulo)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _filmeService.Atualizar(filme, id);
+                var response = _filmeService.Atualizar(filme, id, titulo);
 
                 return Ok(response);
             }
@@ -69,11 +69,11 @@ namespace Controller.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, string titulo)
         {
             try
             {
-                _filmeService.Deletar(id);
+                _filmeService.Deletar(id, titulo);
 
                 return Ok();
             }

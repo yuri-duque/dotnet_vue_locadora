@@ -69,11 +69,11 @@ namespace Controller.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, string CPF)
         {
             try
             {
-                _clienteService.Deletar(id);
+                _clienteService.Deletar(id, CPF);
 
                 return Ok();
             }

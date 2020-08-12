@@ -35,13 +35,13 @@ namespace Service.Models
 
         public object Devolver(Locacao locacao, int idCliente, int idFilme)
         {
-            _locacaoRepository.VerificarExistencia("Locação não encontrada", idCliente, idFilme);
+            _locacaoRepository.EncontrarLocacao(idCliente, idFilme);
 
             // verificar se o filme já não foi devolvido
 
             locacao.IdFilme = idFilme;
             locacao.IdCliente = idCliente;
-            locacao.DataLocacao = DateTime.Now;
+            locacao.DataDevolucao = DateTime.Now;
 
             _locacaoRepository.Update(locacao);
 
@@ -50,7 +50,7 @@ namespace Service.Models
 
         public void Deletar(int idCliente, int idFilme)
         {
-            _locacaoRepository.VerificarExistencia("Locação não encontrada", idCliente, idFilme);
+            _locacaoRepository.EncontrarLocacao(idCliente, idFilme);
 
             // verificar se o filme não está alugado
 

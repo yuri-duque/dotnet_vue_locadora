@@ -5,7 +5,7 @@ namespace Domain.Enum
     public enum EnumClassificacaoIndicativa
     {
         [Description("L")]
-        Livre = 1,
+        Livre = 0,
 
         [Description("10")]
         Dez = 10,

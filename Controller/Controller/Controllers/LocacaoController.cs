@@ -50,7 +50,7 @@ namespace Controller.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public ActionResult Devolver(Locacao locacao, int idCliente, int idFilme)
         {
             try

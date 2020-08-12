@@ -29,9 +29,11 @@ namespace Service.Models
             return filme;
         }
 
-        public object Atualizar(Filme filme, int id)
+        public object Atualizar(Filme filme, int id, string titulo)
         {
-            _filmeRepository.VerificarExistencia("Filme não encontrado!", id);
+            _filmeRepository.EncontrarFilme(id, titulo);
+
+            // Verificar se novo titulo está disponivel
 
             filme.Id = id;
 
@@ -40,9 +42,9 @@ namespace Service.Models
             return filme;
         }
 
-        public void Deletar(int id)
+        public void Deletar(int id, string titulo)
         {
-            _filmeRepository.VerificarExistencia("Filme não encontrado!", id);
+            _filmeRepository.EncontrarFilme(id, titulo);
 
             // verificar locacoes
 
