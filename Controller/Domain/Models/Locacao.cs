@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace Domain.Models
 {
@@ -12,7 +9,7 @@ namespace Domain.Models
         [Required]
         public DateTime DataLocacao { get; set; }
 
-        public DateTime DataDevolucao { get; set; }
+        public DateTime? DataDevolucao { get; set; }
 
         #region Relacionamento
 
