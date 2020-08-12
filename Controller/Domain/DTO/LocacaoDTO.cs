@@ -9,8 +9,7 @@ namespace Domain.DTO
         public ClienteDTO Cliente { get; set; }
         public FilmeDTO Filme { get; set; }
         public DateTime DataLocacao { get; set; }
-        public DateTime DataDevolucao { get; set; }
-        public bool FilmeDevolvido { get; set; }
+        public DateTime? DataDevolucao { get; set; }
     }
 
     public class LocacaoAlugarDTO
@@ -36,8 +35,6 @@ namespace Domain.DTO
         public DateTime DataLocacao { get; set; }
 
         [Required(ErrorMessage = "A {0} é obrigatória!")]
-        public DateTime DataDevolucao { get; set; }
-
-        public bool FilmeDevolvido { get; set; }
+        public DateTime? DataDevolucao { get; set; }
     }
 }

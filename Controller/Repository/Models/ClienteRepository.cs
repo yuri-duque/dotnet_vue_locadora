@@ -36,10 +36,9 @@ namespace Repository.Models
                 list = list
                     .SelectMany(x => x.Locacoes)
                     .Include(x => x.Filme)
-                    .Where(x => 
-                        (x.DataDevolucao != null && Convert.ToDateTime(x.DataDevolucao) > DataDevolucaoCorreta(x.DataLocacao, x.Filme.Lancamento))
-                        || (x.DataDevolucao == null && DataDevolucaoCorreta(x.DataLocacao, x.Filme.Lancamento) < DateTime.Now)
-                    )
+                    .Where(x =>
+                        (x.DataDevolucao > (x.Filme.Lancamento ? x.DataLocacao.AddDays(2) : x.DataLocacao.AddDays(3)))
+                        || (x.DataDevolucao == null && (x.Filme.Lancamento ? x.DataLocacao.AddDays(2) : x.DataLocacao.AddDays(3)) < DateTime.Now))
                     .Select(x => x.Cliente);
             }
 

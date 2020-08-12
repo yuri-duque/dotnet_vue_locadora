@@ -45,8 +45,7 @@ namespace Repository.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DataLocacao = table.Column<DateTime>(nullable: false),
-                    DataDevolucao = table.Column<DateTime>(nullable: false),
-                    FilmeDevolvido = table.Column<bool>(nullable: false),
+                    DataDevolucao = table.Column<DateTime>(nullable: true),
                     IdCliente = table.Column<int>(nullable: false),
                     IdFilme = table.Column<int>(nullable: false)
                 },

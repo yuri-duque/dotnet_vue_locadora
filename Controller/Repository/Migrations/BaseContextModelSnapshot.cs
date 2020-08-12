@@ -75,14 +75,11 @@ namespace Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DataDevolucao")
+                    b.Property<DateTime?>("DataDevolucao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DataLocacao")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("FilmeDevolvido")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");

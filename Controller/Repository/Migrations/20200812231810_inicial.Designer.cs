@@ -9,7 +9,7 @@ using Repository.Context;
 namespace Repository.Migrations
 {
     [DbContext(typeof(BaseContext))]
-    [Migration("20200812035100_inicial")]
+    [Migration("20200812231810_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,14 +77,11 @@ namespace Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DataDevolucao")
+                    b.Property<DateTime?>("DataDevolucao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DataLocacao")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("FilmeDevolvido")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
