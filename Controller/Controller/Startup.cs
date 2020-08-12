@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repository.Context;
+using Repository.Models;
+using Service.Models;
 
 namespace Controller
 {
@@ -30,15 +32,17 @@ namespace Controller
 
             #region Repository
 
-            //services.AddScoped<UserRepository>();
-            //services.AddScoped<WalletRepository>();
+            services.AddScoped<ClienteRepository>();
+            services.AddScoped<FilmeRepository>();
+            services.AddScoped<LocacaoRepository>();
 
             #endregion
 
             #region Service
 
-            //services.AddScoped<UserService>();
-            //services.AddScoped<WalletService>();
+            services.AddScoped<ClienteService>();
+            services.AddScoped<FilmeService>();
+            services.AddScoped<LocacaoService>();
 
             #endregion
         }
