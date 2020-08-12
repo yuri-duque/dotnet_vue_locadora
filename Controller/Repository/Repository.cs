@@ -69,5 +69,13 @@ namespace Repository
 
             _ctx.SaveChanges();
         }
+
+        public void VerificarExistencia(string erroMessage, params object[] key)
+        {
+            var result = Find(key);
+
+            if (result != null)
+                throw new Exception(erroMessage);
+        }
     }
 }
