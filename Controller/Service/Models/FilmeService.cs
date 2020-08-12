@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Domain.DTO;
 using Domain.Models;
 using Repository.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Service.Models
@@ -17,24 +19,40 @@ namespace Service.Models
             _mapper = mapper;
         }
 
-        public object BuscarTodos()
+        public IList<FilmeDTO> BuscarTodos()
         {
-            return _filmeRepository.GetAll().ToList();
+            var list = _filmeRepository.GetAll().ToList();
+
+            var listDTO = _mapper.Map<List<FilmeDTO>>(list);
+
+            return listDTO;
         }
 
-        public object Salvar(Filme filme)
+        public object Salvar(FilmeDTO filmeDTO)
         {
+            var filme = _filmeRepository.GetByTitulo(filmeDTO.Titulo);
+            if (filme != null)
+                throw new Exception("Já existe um filme cadastrado com esse titulo!");
+
+            filme = _mapper.Map<Filme>(filmeDTO);
+
             _filmeRepository.Save(filme);
 
             return filme;
         }
 
-        public object Atualizar(Filme filme, int id, string titulo)
+        public object Atualizar(FilmeDTO filmeDTO, int id, string titulo)
         {
             _filmeRepository.EncontrarFilme(id, titulo);
 
-            // Verificar se novo titulo está disponivel
+            if (!titulo.Equals(filmeDTO.Titulo))
+            {
+                var filmeBase = _filmeRepository.GetByTitulo(filmeDTO.Titulo);
+                if (filmeBase != null)
+                    throw new Exception("Já existe um filme cadastrado com esse titulo!");
+            }            
 
+            var filme = _mapper.Map<Filme>(filmeDTO);
             filme.Id = id;
 
             _filmeRepository.Update(filme);
@@ -46,19 +64,11 @@ namespace Service.Models
         {
             _filmeRepository.EncontrarFilme(id, titulo);
 
-            // verificar locacoes
+            var filme = _filmeRepository.GetLocacoesAtivasByIdFilme(id);
+            if(filme.Locacoes.Any())
+                throw new Exception($"Não é possivel excluir esse filme, pois existem '{filme.Locacoes.Count()}' locações que não foram devolvidas!");
 
             _filmeRepository.Delete(x => x.Id == id);
-        }
-
-        public Filme GetById(int id)
-        {
-            return _filmeRepository.GetById(id);
-        }
-
-        public Filme GetByTitulo(string titulo)
-        {
-            return _filmeRepository.GetByTitulo(titulo);
         }
     }
 }

@@ -4,7 +4,6 @@ using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,15 +12,15 @@ namespace Service.Models
     public class LocacaoService
     {
         private readonly LocacaoRepository _locacaoRepository;
-        private readonly FilmeService _filmeService;
-        private readonly ClienteService _clienteService;
+        private readonly FilmeRepository _filmeRepository;
+        private readonly ClienteRepository _clienteRepository;
         private readonly IMapper _mapper;
 
-        public LocacaoService(LocacaoRepository locacaoRepository, FilmeService filmeService, ClienteService clienteService, IMapper mapper)
+        public LocacaoService(LocacaoRepository locacaoRepository, FilmeRepository filmeRepository, ClienteRepository clienteRepository, IMapper mapper)
         {
             _locacaoRepository = locacaoRepository;
-            _filmeService = filmeService;
-            _clienteService = clienteService;
+            _filmeRepository = filmeRepository;
+            _clienteRepository = clienteRepository;
             _mapper = mapper;
         }
 
@@ -40,11 +39,11 @@ namespace Service.Models
 
         public Locacao Alugar(LocacaoAlugarDTO locacaoDTO)
         {
-            var filme = _filmeService.GetById(locacaoDTO.IdFilme);
+            var filme = _filmeRepository.GetById(locacaoDTO.IdFilme);
             if(filme == null)
                 throw new Exception("Filme não encontrado!");
 
-            var cliente = _clienteService.GetById(locacaoDTO.IdFilme);
+            var cliente = _clienteRepository.GetById(locacaoDTO.IdFilme);
             if (cliente == null)
                 throw new Exception("Cliente não encontrado!");
 
@@ -74,11 +73,11 @@ namespace Service.Models
 
         public Locacao Devolver(LocacaoAlugarDTO locacaoDTO)
         {
-            var filme = _filmeService.GetById(locacaoDTO.IdFilme);
+            var filme = _filmeRepository.GetById(locacaoDTO.IdFilme);
             if (filme == null)
                 throw new Exception("Filme não encontrado!");
 
-            var cliente = _clienteService.GetById(locacaoDTO.IdFilme);
+            var cliente = _clienteRepository.GetById(locacaoDTO.IdFilme);
             if (cliente == null)
                 throw new Exception("Cliente não encontrado!");
 

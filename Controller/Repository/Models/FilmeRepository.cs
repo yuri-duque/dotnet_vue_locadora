@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Context;
 using System;
 using System.Linq;
@@ -26,7 +27,17 @@ namespace Repository.Models
 
         public Filme GetByTitulo(string titulo)
         {
-            return GetAll().FirstOrDefault(x => x.Titulo == titulo);
+            return GetAll().FirstOrDefault(x => x.Titulo.Equals(titulo));
+        }
+
+        public Filme GetLocacoesAtivasByIdFilme(int id)
+        {
+            return GetAll()
+                .Include(x => x.Locacoes)
+                .SelectMany(x => x.Locacoes)
+                .Where(x => !x.FilmeDevolvido)
+                .Select(x => x.Filme)
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }

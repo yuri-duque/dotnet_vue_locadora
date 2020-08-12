@@ -1,5 +1,4 @@
 ﻿using Domain.DTO;
-using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
 using System;

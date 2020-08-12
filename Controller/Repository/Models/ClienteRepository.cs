@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Context;
 using System;
 using System.Linq;
@@ -22,6 +23,21 @@ namespace Repository.Models
         public Cliente GetById(int id)
         {
             return GetAll().FirstOrDefault(x => x.Id == id);
+        }
+
+        public Cliente GetByCPF(string CPF)
+        {
+            return GetAll().FirstOrDefault(x => x.CPF.Equals(CPF));
+        }
+
+        public Cliente GetLocacoesAtivasByCliente(int id)
+        {
+            return GetAll()
+                .Include(x => x.Locacoes)
+                .SelectMany(x => x.Locacoes)
+                .Where(x => !x.FilmeDevolvido)
+                .Select(x => x.Cliente)
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }

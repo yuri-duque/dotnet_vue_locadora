@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.DTO;
 using Domain.Models;
 using Repository.Models;
 using System;
@@ -18,22 +19,33 @@ namespace Service.Models
             _mapper = mapper;
         }
 
-        public IList<Cliente> BuscarTodos()
+        public IList<ClienteDTO> BuscarTodos()
         {
-            return _clienteRepository.GetAll().ToList();
+            var list = _clienteRepository.GetAll().ToList();
+
+            var listDTO = _mapper.Map<List<ClienteDTO>>(list);
+
+            return listDTO;
         }
 
-        public Cliente Salvar(Cliente cliente)
+        public Cliente Salvar(ClienteDTO clienteDTO)
         {
+            var cliente = _clienteRepository.GetByCPF(clienteDTO.CPF);
+            if (cliente != null)
+                throw new Exception("Já existe um cliente cadastrado com esse CPF!");
+
+            cliente = _mapper.Map<Cliente>(clienteDTO);
+
             _clienteRepository.Save(cliente);
 
             return cliente;
         }
 
-        public object Atualizar(Cliente cliente, int id)
+        public object Atualizar(ClienteDTO clienteDTO, int id)
         {
-            _clienteRepository.EncontrarCliente(id, cliente.CPF);
+            _clienteRepository.EncontrarCliente(id, clienteDTO.CPF);
 
+            var cliente = _mapper.Map<Cliente>(clienteDTO);
             cliente.Id = id;
 
             _clienteRepository.Update(cliente);
@@ -46,13 +58,11 @@ namespace Service.Models
             _clienteRepository.EncontrarCliente(id, CPF);
 
             // verificar locacoes
+            var cliente = _clienteRepository.GetLocacoesAtivasByCliente(id);
+            if (cliente.Locacoes.Any())
+                throw new Exception($"Não é possivel excluir esse cliente, pois existem '{cliente.Locacoes.Count()}' locações que não foram devolvidas!");
 
             _clienteRepository.Delete(x => x.Id == id);
-        }
-
-        public Cliente GetById(int id)
-        {
-            return _clienteRepository.GetById(id);
         }
     }
 }

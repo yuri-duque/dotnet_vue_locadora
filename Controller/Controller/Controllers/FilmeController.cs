@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
 using System;
@@ -33,14 +33,14 @@ namespace Controller.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(Filme filme)
+        public ActionResult Save(FilmeDTO filmeDTO)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _filmeService.Salvar(filme);
+                var response = _filmeService.Salvar(filmeDTO);
 
                 return Ok(response);
             }
@@ -51,14 +51,14 @@ namespace Controller.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update(Filme filme, int id, string titulo)
+        public ActionResult Update(FilmeDTO filmeDTO, int id, string titulo)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _filmeService.Atualizar(filme, id, titulo);
+                var response = _filmeService.Atualizar(filmeDTO, id, titulo);
 
                 return Ok(response);
             }
