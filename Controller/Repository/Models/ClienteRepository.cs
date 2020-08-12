@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Repository.Context;
 using System;
+using System.Linq;
 
 namespace Repository.Models
 {
@@ -16,6 +17,11 @@ namespace Repository.Models
                 throw new Exception("Cliente não encontrado! Verifique se Id e o CPF estão corretos.");
             else
                 Detached(result);
+        }
+
+        public Cliente GetById(int id)
+        {
+            return GetAll().FirstOrDefault(x => x.Id == id);
         }
     }
 }

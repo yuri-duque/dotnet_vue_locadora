@@ -9,7 +9,10 @@ namespace Domain.Models
         [Required]
         public DateTime DataLocacao { get; set; }
 
-        public DateTime? DataDevolucao { get; set; }
+        [Required]
+        public DateTime DataDevolucao { get; set; }
+
+        public bool FilmeDevolvido { get; set; }
 
         #region Relacionamento
 

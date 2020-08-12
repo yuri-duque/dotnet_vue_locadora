@@ -17,7 +17,7 @@ namespace Domain.Models
         public EnumClassificacaoIndicativa ClassificacaoIndicativa { get; set; }
 
         [Required]
-        public short Lancamento { get; set; }
+        public bool Lancamento { get; set; } // false = Comum, true = Lancamento
 
         #region Relacionamento
 

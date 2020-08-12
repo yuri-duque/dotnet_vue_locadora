@@ -8,7 +8,7 @@ namespace Repository.Models
     {
         public LocacaoRepository(BaseContext ctx) : base(ctx) { }
 
-        public void EncontrarLocacao(int idCliente, int idFilme)
+        public Locacao EncontrarLocacao(int idCliente, int idFilme)
         {
             var result = Find(idCliente, idFilme);
 
@@ -16,6 +16,8 @@ namespace Repository.Models
                 throw new Exception("Locacao não encontrada! Verifique se IdCliente e o IdFilme estão corretos.");
             else
                 Detached(result);
+
+            return result;
         }
     }
 }

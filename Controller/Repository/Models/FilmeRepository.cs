@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Repository.Context;
 using System;
+using System.Linq;
 
 namespace Repository.Models
 {
@@ -18,5 +19,14 @@ namespace Repository.Models
                 Detached(result);
         }
 
+        public Filme GetById(int id)
+        {
+            return GetAll().FirstOrDefault(x => x.Id == id);
+        }
+
+        public Filme GetByTitulo(string titulo)
+        {
+            return GetAll().FirstOrDefault(x => x.Titulo == titulo);
+        }
     }
 }

@@ -6,7 +6,9 @@ namespace Domain.AutoMapper
     {
         public AutoMapping()
         {
-            //new UserMapping();
+            new ClienteMapping();
+            new FilmeMapping();
+            new LocacaoMapping();
         }
     }
 }

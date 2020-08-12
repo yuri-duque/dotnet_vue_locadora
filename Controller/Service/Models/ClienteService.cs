@@ -48,6 +48,11 @@ namespace Service.Models
             // verificar locacoes
 
             _clienteRepository.Delete(x => x.Id == id);
-        }        
+        }
+
+        public Cliente GetById(int id)
+        {
+            return _clienteRepository.GetById(id);
+        }
     }
 }

@@ -50,5 +50,15 @@ namespace Service.Models
 
             _filmeRepository.Delete(x => x.Id == id);
         }
+
+        public Filme GetById(int id)
+        {
+            return _filmeRepository.GetById(id);
+        }
+
+        public Filme GetByTitulo(string titulo)
+        {
+            return _filmeRepository.GetByTitulo(titulo);
+        }
     }
 }

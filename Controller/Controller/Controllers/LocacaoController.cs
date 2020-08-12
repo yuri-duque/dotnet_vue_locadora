@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.DTO;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
 using System;
@@ -32,8 +33,8 @@ namespace Controller.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult Alugar(Locacao locacao)
+        [HttpPost("Alugar")]
+        public ActionResult Alugar(LocacaoAlugarDTO locacao)
         {
             try
             {
@@ -50,15 +51,33 @@ namespace Controller.Controllers
             }
         }
 
-        [HttpPut]
-        public ActionResult Devolver(Locacao locacao, int idCliente, int idFilme)
+        [HttpPost("Devolver")]
+        public ActionResult Devolver(LocacaoAlugarDTO locacao)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
 
-                var response = _locacaoService.Devolver(locacao, idCliente, idFilme);
+                var response = _locacaoService.Devolver(locacao);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public ActionResult Atualizar([FromBody]LocacaoAtualizarDTO locacao, int idCliente, int idFilme)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
+
+                var response = _locacaoService.Atualizar(locacao, idCliente, idFilme);
 
                 return Ok(response);
             }
