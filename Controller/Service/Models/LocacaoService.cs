@@ -54,11 +54,6 @@ namespace Service.Models
             var locacao = _mapper.Map<Locacao>(locacaoDTO);
             locacao.DataLocacao = DateTime.Now;
 
-            if(filme.Lancamento)
-                locacao.DataDevolucao = DateTime.Now.AddDays(2);
-            else
-                locacao.DataDevolucao = DateTime.Now.AddDays(3);
-
             _locacaoRepository.Save(locacao);
 
             locacao.Cliente = cliente;
@@ -93,10 +88,10 @@ namespace Service.Models
                 throw new Exception("Cliente não encontrado!");
 
             var locacao = _locacaoRepository.EncontrarLocacao(locacaoDTO.Id);
-            if (locacao.FilmeDevolvido)
+            if (locacao.DataDevolucao != null)
                 throw new Exception("Essa locação já foi devolvida!");
 
-            locacao.FilmeDevolvido = true;
+            locacao.DataDevolucao = DateTime.Now;
 
             _locacaoRepository.Update(locacao);
 
@@ -110,7 +105,7 @@ namespace Service.Models
         {
             var locacao = _locacaoRepository.EncontrarLocacao(id);
 
-            if (!locacao.FilmeDevolvido)
+            if (locacao.DataDevolucao != null)
                 throw new Exception("Não doi possivel excluir essa locação, pois ela ainda não foi devolvida.");
 
             _locacaoRepository.Delete(x => x.Id == id);

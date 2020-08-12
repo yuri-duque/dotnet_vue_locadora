@@ -35,7 +35,11 @@ namespace Repository.Models
             {
                 list = list
                     .SelectMany(x => x.Locacoes)
-                    .Where(x => !x.FilmeDevolvido && x.DataDevolucao < DateTime.Now)
+                    .Include(x => x.Filme)
+                    .Where(x => 
+                        (x.DataDevolucao != null && Convert.ToDateTime(x.DataDevolucao) > DataDevolucaoCorreta(x.DataLocacao, x.Filme.Lancamento))
+                        || (x.DataDevolucao == null && DataDevolucaoCorreta(x.DataLocacao, x.Filme.Lancamento) < DateTime.Now)
+                    )
                     .Select(x => x.Cliente);
             }
 
@@ -47,6 +51,14 @@ namespace Repository.Models
             }
 
             return list;
+        }
+
+        private DateTime DataDevolucaoCorreta(DateTime dataLocacao, bool lancamento)
+        {
+            if (lancamento)
+                return dataLocacao.AddDays(2);
+            else
+                return dataLocacao.AddDays(3);
         }
     }
 }

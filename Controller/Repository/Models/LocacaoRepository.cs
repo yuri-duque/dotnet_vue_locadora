@@ -24,13 +24,13 @@ namespace Repository.Models
         public IQueryable<Locacao> GetLocacoesAtivasByCliente(int idCliente)
         {
             return GetAll()
-                .Where(x => !x.FilmeDevolvido && x.IdCliente == idCliente);
+                .Where(x => x.DataDevolucao == null && x.IdCliente == idCliente);
         }
 
         public IQueryable<Locacao> GetLocacoesAtivasByFilme(int idFilme)
         {
             return GetAll()
-                .Where(x => !x.FilmeDevolvido && x.IdFilme == idFilme);
+                .Where(x => x.DataDevolucao == null && x.IdFilme == idFilme);
         }
     }
 }
