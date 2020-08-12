@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "6e200fae-cf54-4db5-bebb-33c485514f77",
+		"name": "Livraria",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/cliente",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CPF\":\"00000000000\",\r\n    \"nome\":\"yuri\",\r\n    \"dataNascimento\":\"1997-01-21\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44387/api/cliente",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"00000000000\",\r\n    \"nome\": \"yuri-update\",\r\n    \"dataNascimento\": \"1997-01-22T00:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44387/api/cliente/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/cliente/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Filme",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/filme",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"filme"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\":\"Filme 1\",\r\n    \"classificacaoIndicativa\": 0,\r\n    \"lancamento\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44387/api/filme",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"filme"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"Filme 1 - update\",\r\n    \"classificacaoIndicativa\": 10,\r\n    \"lancamento\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44387/api/filme/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"filme",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/filme/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"filme",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Locacao",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/locacao",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"locacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alugar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idCliente\":1,\r\n    \"IdFilme\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44387/api/locacao/Alugar",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"locacao",
+								"Alugar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Devolver",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"idCliente\": 1,\r\n    \"idFilme\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44387/api/locacao/Devolver",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"locacao",
+								"Devolver"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"dataLocacao\": \"2020-08-11T22:57:47.402249\",\r\n        \"dataDevolucao\": \"2020-08-14T22:57:47.40232\",\r\n        \"filmeDevolvido\": false,\r\n        \"idCliente\": 1,\r\n        \"idFilme\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44387/api/locacao/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"locacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/locacao/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"locacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Relatórios",
+			"item": [
+				{
+					"name": "Clientes com devolução atrasada",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/cliente/relatorio?isAtrasados=true",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"cliente",
+								"relatorio"
+							],
+							"query": [
+								{
+									"key": "isAtrasados",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filmes que NUNCA foram alugados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/filme/relatorio?isNuncaAlugados=true",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"filme",
+								"relatorio"
+							],
+							"query": [
+								{
+									"key": "isNuncaAlugados",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cinco filmes mais alugados no último ano",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/filme/relatorio?maisAlugados=true&PeriodoMaisAlugados=2019-08-12&quantidadeItens=5",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"filme",
+								"relatorio"
+							],
+							"query": [
+								{
+									"key": "maisAlugados",
+									"value": "true"
+								},
+								{
+									"key": "PeriodoMaisAlugados",
+									"value": "2019-08-12"
+								},
+								{
+									"key": "quantidadeItens",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Três filmes menos alugados da última semana",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/filme/relatorio?maisAlugados=false&PeriodoMaisAlugados=2020-08-3&quantidadeItens=3",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"filme",
+								"relatorio"
+							],
+							"query": [
+								{
+									"key": "maisAlugados",
+									"value": "false"
+								},
+								{
+									"key": "PeriodoMaisAlugados",
+									"value": "2020-08-3"
+								},
+								{
+									"key": "quantidadeItens",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "O Segundo cliente que mais alugou filmes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44387/api/cliente/relatorio?indexRecordistas=2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44387",
+							"path": [
+								"api",
+								"cliente",
+								"relatorio"
+							],
+							"query": [
+								{
+									"key": "indexRecordistas",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
