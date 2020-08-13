@@ -73,6 +73,13 @@ namespace Service.Models
             _clienteRepository.Delete(x => x.Id == id);
         }
 
+        public dynamic GetOptionsSelect()
+        {
+            var list = _clienteRepository.GetAll().Select(x => new { x.Id, x.Nome}).ToList();
+
+            return list;
+        }
+
         public IList<ClienteDTO> Relatorio(bool isAtrasados, int? indexRecordistas)
         {
             var list = _clienteRepository.Relatorio(isAtrasados, indexRecordistas).ToList();

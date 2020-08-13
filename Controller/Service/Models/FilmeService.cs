@@ -73,6 +73,13 @@ namespace Service.Models
             _filmeRepository.Delete(x => x.Id == id);
         }
 
+        public dynamic GetOptionsSelect()
+        {
+            var list = _filmeRepository.GetAll().Select(x => new { x.Id, x.Titulo }).ToList();
+
+            return list;
+        }
+
         public IList<FilmeDTO> Relatorio(bool isNuncaAlugados, bool? maisAlugados = null, DateTime? periodoMaisAlugados = null, int? quantidadeFilmes = null)
         {
             var list = _filmeRepository.Relatorio(isNuncaAlugados, maisAlugados, periodoMaisAlugados, quantidadeFilmes).ToList();

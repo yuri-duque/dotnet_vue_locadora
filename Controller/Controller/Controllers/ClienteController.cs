@@ -83,6 +83,21 @@ namespace Controller.Controllers
             }
         }
 
+        [HttpGet("options-select")]
+        public ActionResult GetOptionsSelect()
+        {
+            try
+            {
+                var response = _clienteService.GetOptionsSelect();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("relatorio")]
         public ActionResult Relatorio(bool isAtrasados, int? indexRecordistas)
         {

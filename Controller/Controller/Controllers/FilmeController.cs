@@ -83,6 +83,21 @@ namespace Controller.Controllers
             }
         }
 
+        [HttpGet("options-select")]
+        public ActionResult GetOptionsSelect()
+        {
+            try
+            {
+                var response = _filmeService.GetOptionsSelect();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("relatorio")]
         public ActionResult Relatorio(bool isNuncaAlugados, bool? maisAlugados = null, DateTime? PeriodoMaisAlugados = null, int? quantidadeItens = null)
         {
