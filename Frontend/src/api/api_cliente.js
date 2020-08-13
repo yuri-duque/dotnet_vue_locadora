@@ -17,6 +17,10 @@ export default {
         return apiUtils.put('cliente', data, id);
     },
 
+    deletar(id) {
+        return apiUtils.delete(`cliente/${id}`);
+    },
+
     getById(id){
         return apiUtils.get(`cliente/${id}`);
     }
