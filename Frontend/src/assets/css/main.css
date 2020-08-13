@@ -70,3 +70,7 @@
 [dir] .vs__open-indicator {
    margin-top: -5px;
 }
+
+.pointer{
+   cursor: pointer !important;
+}

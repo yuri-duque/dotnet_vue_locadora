@@ -36,6 +36,11 @@ const router = new Router({
                 name: 'locacao-cadastro',
                 component: () => import('./views/pages/locacao/LocacaoForm.vue')
               },
+              {
+                path: '/locacao/editar',
+                name: 'locacao-editar',
+                component: () => import('./views/pages/locacao/LocacaoForm.vue')
+              },
               
               // CLIENTE
               {
@@ -48,6 +53,11 @@ const router = new Router({
                 name: 'cliente-cadastro',
                 component: () => import('./views/pages/cliente/ClienteForm.vue')
               },
+              {
+                path: '/cliente/editar',
+                name: 'cliente-editar',
+                component: () => import('./views/pages/cliente/ClienteForm.vue')
+              },
 
               // FILME
               {
@@ -58,6 +68,11 @@ const router = new Router({
               {
                 path: '/filme/cadastro',
                 name: 'filme-cadastro',
+                component: () => import('./views/pages/filme/FilmeForm.vue')
+              },
+              {
+                path: '/filme/editar',
+                name: 'filme-editar',
                 component: () => import('./views/pages/filme/FilmeForm.vue')
               },
             ],

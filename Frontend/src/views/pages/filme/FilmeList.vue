@@ -14,6 +14,7 @@
         <vs-th>Titulo</vs-th>
         <vs-th>Classificacao</vs-th>
         <vs-th>Lançamento</vs-th>
+        <vs-th>Ações</vs-th>
       </template>
 
       <template slot-scope="{data}">
@@ -22,6 +23,18 @@
           <vs-td>{{data[indextr].titulo}}</vs-td>
           <vs-td>{{data[indextr].classificacaoIndicativa}}</vs-td>
           <vs-td>{{data[indextr].lancamento}}</vs-td>
+
+          <vs-td>
+            <vs-row vs-type="flex" vs-justify="space-around" vs-align="center">
+              <vs-button color="primary" type="flat" class="p-0" :to="`filme/editar?id=${data[indextr].id}`">
+                <feather-icon class="w-5 h-5" icon="EditIcon" title="Editar" />
+              </vs-button>
+
+              <vs-button color="danger" type="flat" class="p-0">
+                <feather-icon class="w-5 h-5" icon="TrashIcon" title="Excluir" />
+              </vs-button>
+            </vs-row>
+          </vs-td>
         </vs-tr>
       </template>
     </vs-table>

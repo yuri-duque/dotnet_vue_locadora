@@ -19,12 +19,12 @@ export default [
     url: "/cliente",
     name: "Clientes",
     slug: "clientes",
-    icon: "FileIcon",
+    icon: "UserIcon",
   },
   {
     url: "/filme",
     name: "Filmes",
     slug: "filmes",
-    icon: "FileIcon",
+    icon: "FilmIcon",
   }
 ]

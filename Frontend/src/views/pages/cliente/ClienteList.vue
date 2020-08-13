@@ -18,6 +18,7 @@
         <vs-th>Nome</vs-th>
         <vs-th>CPF</vs-th>
         <vs-th>Data de nascimento</vs-th>
+        <vs-th>Ações</vs-th>
       </template>
 
       <template slot-scope="{data}">
@@ -26,6 +27,18 @@
           <vs-td>{{data[indextr].nome}}</vs-td>
           <vs-td>{{mascaraCPF(data[indextr].cpf)}}</vs-td>
           <vs-td>{{formatarData(data[indextr].dataNascimento)}}</vs-td>
+
+          <vs-td>
+            <vs-row vs-type="flex" vs-justify="space-around" vs-align="center" class="pointer">
+              <vs-button color="primary" type="flat" class="p-0" :to="`cliente/editar?id=${data[indextr].id}`">
+                <feather-icon class="w-5 h-5" icon="EditIcon" title="Editar" />
+              </vs-button>
+
+              <vs-button color="danger" type="flat" class="p-0">
+                <feather-icon class="w-5 h-5" icon="TrashIcon" title="Excluir" />
+              </vs-button>
+            </vs-row>
+          </vs-td>
         </vs-tr>
       </template>
     </vs-table>
