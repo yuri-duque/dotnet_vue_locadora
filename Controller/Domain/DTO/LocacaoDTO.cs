@@ -34,7 +34,6 @@ namespace Domain.DTO
         [Required(ErrorMessage = "A {0} é obrigatória!")]
         public DateTime DataLocacao { get; set; }
 
-        [Required(ErrorMessage = "A {0} é obrigatória!")]
         public DateTime? DataDevolucao { get; set; }
     }
 }

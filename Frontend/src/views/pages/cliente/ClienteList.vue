@@ -94,8 +94,6 @@ export default {
         });
     },
 
-    excluir() {},
-
     openConfirmDialog(id) {
       this.id = id;
       this.$vs.dialog({

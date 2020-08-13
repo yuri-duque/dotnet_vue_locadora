@@ -31,7 +31,7 @@
           <vs-td>{{formatarData(data[indextr].dataDevolucao)}}</vs-td>
           <vs-td>
             <vs-row vs-type="flex" vs-justify="space-around" vs-align="center">
-              <vs-button color="primary" type="flat" class="p-1" @click="devolver(data[indextr].id)">
+              <vs-button color="primary" type="flat" class="p-1" @click="openConfirmDialogDevolver(data[indextr])">
                 <feather-icon class="w-5 h-5" icon="TruckIcon" title="Devolver" />
               </vs-button>
 
@@ -39,8 +39,8 @@
                 <feather-icon class="w-5 h-5" icon="EditIcon" title="Editar" />
               </vs-button>
 
-              <vs-button color="danger" type="flat" class="p-1" @click="excluir(data[indextr].id)">
-                <feather-icon class="w-5 h-5" icon="TrashIcon" title="Excluir" />
+              <vs-button color="danger" type="flat" class="p-1" @click="openConfirmDialogDelete(data[indextr].id)">
+                <feather-icon class="w-5 h-5"  icon="TrashIcon" title="Excluir" />
               </vs-button>
             </vs-row>
           </vs-td>
@@ -57,6 +57,9 @@ import utils from "@/assets/utils";
 export default {
   data: () => ({
     locacoes: [],
+
+    id: null,
+    locacao: null
   }),
 
   created() {
@@ -93,13 +96,93 @@ export default {
       return data.toLocaleString();
     },
 
-    devolver(){
-
+    openConfirmDialogDelete(id) {
+      this.id = id;
+      this.$vs.dialog({
+        type: "confirm",
+        color: "danger",
+        title: `Confirmação`,
+        acceptText: "Sim",
+        cancelText: "Cancelar",
+        text: "Deseja realmente deletar essa locação?",
+        accept: this.deletar,
+      });
     },
 
-    excluir(){
+    openConfirmDialogDevolver(data) {
+      this.locacao = data;
+      this.$vs.dialog({
+        type: "confirm",
+        color: "success",
+        title: `Confirmação`,
+        acceptText: "Sim",
+        cancelText: "Cancelar",
+        text: "Deseja realmente devolver essa locação?",
+        accept: this.devolver,
+      });
+    },
 
-    }
+    deletar() {
+      this.$vs.loading();
+      api_locacao
+        .deletar(this.id)
+        .then(() => {
+          this.$vs.loading.close();
+
+          this.$vs.notify({
+            color: "success",
+            title: "Locação deletado!",
+            text: "Locação deletado com sucesso",
+          });
+
+          this.getAll();
+        })
+        .catch((error) => {
+          var exception = utils.getError(error);
+
+          this.$vs.loading.close();
+          this.$vs.notify({
+            color: "danger",
+            title: "Erro ao deletar o locação!",
+            text: exception,
+          });
+        });
+    },
+
+    devolver() {
+      this.$vs.loading();
+      debugger;
+
+      var data = {
+        id: this.locacao.id,
+        idCliente: this.locacao.cliente.id,
+        idFilme: this.locacao.filme.id,
+      }
+
+      api_locacao
+        .devolver(data)
+        .then(() => {
+          this.$vs.loading.close();
+
+          this.$vs.notify({
+            color: "success",
+            title: "Locação devolvida!",
+            text: "Locação devolvida com sucesso",
+          });
+
+          this.getAll();
+        })
+        .catch((error) => {
+          var exception = utils.getError(error);
+
+          this.$vs.loading.close();
+          this.$vs.notify({
+            color: "danger",
+            title: "Erro ao devolver o locação!",
+            text: exception,
+          });
+        });
+    },
   },
 };
 </script>

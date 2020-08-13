@@ -38,6 +38,17 @@ namespace Service.Models
             return listDTO;
         }
 
+        public LocacaoDTO GetById(int id)
+        {
+            var locacao = _locacaoRepository.Find(id);
+
+            locacao.Filme = _filmeRepository.Find(locacao.IdFilme);
+
+            locacao.Cliente = _clienteRepository.Find(locacao.IdCliente);
+
+            return _mapper.Map<LocacaoDTO>(locacao);
+        }
+
         public LocacaoDTO Alugar(LocacaoAlugarDTO locacaoDTO)
         {
             var filme = _filmeRepository.Find(locacaoDTO.IdFilme);
@@ -105,7 +116,7 @@ namespace Service.Models
         {
             var locacao = _locacaoRepository.EncontrarLocacao(id);
 
-            if (locacao.DataDevolucao != null)
+            if (locacao.DataDevolucao == null)
                 throw new Exception("Não doi possivel excluir essa locação, pois ela ainda não foi devolvida.");
 
             _locacaoRepository.Delete(x => x.Id == id);

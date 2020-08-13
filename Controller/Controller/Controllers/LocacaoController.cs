@@ -32,6 +32,21 @@ namespace Controller.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public ActionResult GetById(int id)
+        {
+            try
+            {
+                var response = _locacaoService.GetById(id);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("Alugar")]
         public ActionResult Alugar(LocacaoAlugarDTO locacao)
         {
