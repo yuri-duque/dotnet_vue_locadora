@@ -22,42 +22,50 @@ const router = new Router({
     routes: [
 
         {
-    // =============================================================================
-    // MAIN LAYOUT ROUTES
-    // =============================================================================
             path: '',
             component: () => import('./layouts/main/Main.vue'),
             children: [
-        // =============================================================================
-        // Theme Routes
-        // =============================================================================
+              // LOCACAO
               {
                 path: '/',
-                name: 'home',
-                component: () => import('./views/Home.vue')
+                name: 'locacao-list',
+                component: () => import('./views/pages/locacao/LocacaoList.vue')
               },
               {
-                path: '/page2',
-                name: 'page-2',
-                component: () => import('./views/Page2.vue')
+                path: '/locacao/cadastro',
+                name: 'locacao-cadastro',
+                component: () => import('./views/pages/locacao/LocacaoForm.vue')
+              },
+              
+              // CLIENTE
+              {
+                path: '/cliente',
+                name: 'cliente-list',
+                component: () => import('./views/pages/cliente/ClienteList.vue')
+              },
+              {
+                path: '/cliente/cadastro',
+                name: 'cliente-cadastro',
+                component: () => import('./views/pages/cliente/ClienteForm.vue')
+              },
+
+              // FILME
+              {
+                path: '/filme',
+                name: 'filme-list',
+                component: () => import('./views/pages/filme/FilmeList.vue')
+              },
+              {
+                path: '/filme/cadastro',
+                name: 'filme-cadastro',
+                component: () => import('./views/pages/filme/FilmeForm.vue')
               },
             ],
         },
-    // =============================================================================
-    // FULL PAGE LAYOUTS
-    // =============================================================================
         {
             path: '',
             component: () => import('@/layouts/full-page/FullPage.vue'),
             children: [
-        // =============================================================================
-        // PAGES
-        // =============================================================================
-              {
-                path: '/pages/login',
-                name: 'page-login',
-                component: () => import('@/views/pages/Login.vue')
-              },
               {
                 path: '/pages/error-404',
                 name: 'page-error-404',
