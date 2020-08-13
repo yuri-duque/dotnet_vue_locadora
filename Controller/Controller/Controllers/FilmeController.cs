@@ -32,6 +32,21 @@ namespace Controller.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public ActionResult GetById(int id)
+        {
+            try
+            {
+                var response = _filmeService.GetById(id);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public ActionResult Save(FilmeDTO filmeDTO)
         {

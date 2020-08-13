@@ -30,6 +30,13 @@ namespace Service.Models
             return listDTO;
         }
 
+        public FilmeDTO GetById(int id)
+        {
+            var cliente = _filmeRepository.Find(id);
+
+            return _mapper.Map<FilmeDTO>(cliente);
+        }
+
         public FilmeDTO Salvar(FilmeDTO filmeDTO)
         {
             var filme = _filmeRepository.GetByTitulo(filmeDTO.Titulo);

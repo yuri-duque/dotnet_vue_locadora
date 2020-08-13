@@ -31,7 +31,7 @@
               </vs-button>
 
               <vs-button color="danger" type="flat" class="p-0">
-                <feather-icon class="w-5 h-5" icon="TrashIcon" title="Excluir" />
+                <feather-icon class="w-5 h-5" icon="TrashIcon" title="Excluir" @click="openConfirmDialog(data[indextr].id)" />
               </vs-button>
             </vs-row>
           </vs-td>
@@ -48,6 +48,8 @@ import utils from "@/assets/utils";
 export default {
   data: () => ({
     filmes: [],
+
+    id: null,
   }),
 
   created() {
@@ -71,6 +73,46 @@ export default {
           this.$vs.notify({
             color: "danger",
             title: "Erro ao carregar as filmes!",
+            text: exception,
+          });
+        });
+    },
+
+    openConfirmDialog(id) {
+      this.id = id;
+      this.$vs.dialog({
+        type: "confirm",
+        color: "danger",
+        title: `Confirmação`,
+        acceptText: "Sim",
+        cancelText: "Cancelar",
+        text: "Deseja realmente deletar esse filme?",
+        accept: this.deletar,
+      });
+    },
+
+    deletar() {
+      this.$vs.loading();
+      api_filme
+        .deletar(this.id)
+        .then(() => {
+          this.$vs.loading.close();
+
+          this.$vs.notify({
+            color: "success",
+            title: "Filme deletado!",
+            text: "Filme deletado com sucesso",
+          });
+
+          this.getAll();
+        })
+        .catch((error) => {
+          var exception = utils.getError(error);
+
+          this.$vs.loading.close();
+          this.$vs.notify({
+            color: "danger",
+            title: "Erro ao deletar o filme!",
             text: exception,
           });
         });

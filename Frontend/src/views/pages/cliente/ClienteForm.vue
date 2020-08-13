@@ -130,7 +130,6 @@ export default {
     },
 
     submit() {
-      debugger;
       this.$vs.loading();
 
       const data = {

@@ -51,6 +51,10 @@ Vue.use(VeeValidate);
 import VueLocalStorage from 'vue-localstorage'
 Vue.use (VueLocalStorage)
 
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect)
+import 'vue-select/dist/vue-select.css';
+
 Vue.config.productionTip = false
 
 new Vue({

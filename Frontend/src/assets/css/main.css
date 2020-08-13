@@ -74,3 +74,15 @@
 .pointer{
    cursor: pointer !important;
 }
+
+[dir] .vs--single .vs__selected {
+   margin-top: -1px;
+}
+
+.v-select .vs__dropdown-toggle .vs__actions .vs__clear {
+   margin-top: -7px;
+}
+
+.vs__dropdown-menu{
+   height: 200px;
+}
