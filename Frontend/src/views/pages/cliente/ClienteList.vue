@@ -1,6 +1,6 @@
 <template>
   <vs-card class="d-theme-dark-bg p-2">
-    <vs-table :data="users">
+    <vs-table :data="clientes">
       <template slot="header">
         <vs-row vs-type="flex" vs-justify="space-between" class="mb-6">
           <h3 class="mt-2">Clientes</h3>
@@ -24,8 +24,8 @@
         <vs-tr :key="indextr" v-for="(tr, indextr) in data">
           <vs-td>{{data[indextr].id}}</vs-td>
           <vs-td>{{data[indextr].nome}}</vs-td>
-          <vs-td>{{data[indextr].cpf}}</vs-td>
-          <vs-td>{{data[indextr].dataNascimento}}</vs-td>
+          <vs-td>{{mascaraCPF(data[indextr].cpf)}}</vs-td>
+          <vs-td>{{formatarData(data[indextr].dataNascimento)}}</vs-td>
         </vs-tr>
       </template>
     </vs-table>
@@ -33,28 +33,55 @@
 </template>
 
 <script>
+import api_cliente from "@/api/api_cliente";
+import utils from "@/assets/utils";
+
 export default {
   data: () => ({
-    users: [
-      {
-        id: 1,
-        cpf: "00000000000",
-        nome: "yuri-update",
-        dataNascimento: "1997-01-22T00:00:00",
-      },
-      {
-        id: 1,
-        cpf: "00000000000",
-        nome: "yuri-update",
-        dataNascimento: "1997-01-22T00:00:00",
-      },
-      {
-        id: 1,
-        cpf: "00000000000",
-        nome: "yuri-update",
-        dataNascimento: "1997-01-22T00:00:00",
-      },
-    ],
+    clientes: [],
   }),
+
+  created() {
+    this.getAll();
+  },
+
+  methods: {
+    getAll() {
+      this.$vs.loading();
+      api_cliente
+        .getAll()
+        .then((response) => {
+          this.$vs.loading.close();
+
+          this.clientes = response.data;
+        })
+        .catch((error) => {
+          var exception = utils.getError(error);
+
+          this.$vs.loading.close();
+          this.$vs.notify({
+            color: "danger",
+            title: "Erro ao carregar as clientes!",
+            text: exception,
+          });
+        });
+    },
+
+    formatarData(dataString) {
+      if (!dataString) return null;
+
+      var data = new Date(dataString);
+
+      return data.toLocaleString();
+    },
+
+    mascaraCPF(cpf) {
+      cpf = cpf.replace(/\D/g, "");
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      return cpf;
+    },
+  },
 };
 </script>

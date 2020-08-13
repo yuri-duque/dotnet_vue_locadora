@@ -62,3 +62,11 @@
  .span-text-validation{
     font-size: 12px;
  }
+
+ .v-select, .v-select * {
+   height: 37px;
+}
+
+[dir] .vs__open-indicator {
+   margin-top: -5px;
+}

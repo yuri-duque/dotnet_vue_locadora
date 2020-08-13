@@ -1,11 +1,15 @@
 <template>
   <vs-card class="d-theme-dark-bg p-2">
-    <vs-table :data="users">
+    <vs-table :data="locacoes">
       <template slot="header">
         <vs-row vs-type="flex" vs-justify="space-between" class="mb-6">
-            <h3 class="mt-2">Locações</h3>
-            
-            <vs-button color="success" type="filled" :to="{ name: 'locacao-cadastro'}">Cadastrar locação</vs-button>
+          <h3 class="mt-2">Locações</h3>
+
+          <vs-button
+            color="success"
+            type="filled"
+            :to="{ name: 'locacao-cadastro'}"
+          >Cadastrar locação</vs-button>
         </vs-row>
       </template>
 
@@ -22,8 +26,8 @@
           <vs-td>{{data[indextr].id}}</vs-td>
           <vs-td>{{data[indextr].cliente.nome}}</vs-td>
           <vs-td>{{data[indextr].filme.titulo}}</vs-td>
-          <vs-td>{{data[indextr].dataLocacao}}</vs-td>
-          <vs-td>{{data[indextr].dataDevolucao}}</vs-td>
+          <vs-td>{{formatarData(data[indextr].dataLocacao)}}</vs-td>
+          <vs-td>{{formatarData(data[indextr].dataDevolucao)}}</vs-td>
         </vs-tr>
       </template>
     </vs-table>
@@ -31,46 +35,47 @@
 </template>
 
 <script>
+import api_locacao from "@/api/api_locacao";
+import utils from "@/assets/utils";
+
 export default {
   data: () => ({
-    users: [
-      {
-        id: 1,
-        cliente: {
-            nome: "yuri-update",
-        },
-        filme: {
-            titulo: "Filme 1 - update",
-            lancamento: true
-        },
-        dataLocacao: "2020-08-11T20:21:02.863198",
-        dataDevolucao: "2020-08-12T20:21:12.517885"
-      },
-      {
-        id: 1,
-        cliente: {
-            nome: "yuri-update",
-        },
-        filme: {
-            titulo: "Filme 1 - update",
-            lancamento: true
-        },
-        dataLocacao: "2020-08-11T20:21:02.863198",
-        dataDevolucao: "2020-08-12T20:21:12.517885"
-      },
-      {
-        id: 1,
-        cliente: {
-            nome: "yuri-update",
-        },
-        filme: {
-            titulo: "Filme 1 - update",
-            lancamento: true
-        },
-        dataLocacao: "2020-08-11T20:21:02.863198",
-        dataDevolucao: "2020-08-12T20:21:12.517885"
-      },
-    ],
+    locacoes: [],
   }),
+
+  created() {
+    this.getAll();
+  },
+
+  methods: {
+    getAll() {
+      this.$vs.loading();
+      api_locacao
+        .getAll()
+        .then((response) => {
+          this.$vs.loading.close();
+
+          this.locacoes = response.data;
+        })
+        .catch((error) => {
+          var exception = utils.getError(error);
+
+          this.$vs.loading.close();
+          this.$vs.notify({
+            color: "danger",
+            title: "Erro ao carregar as locações!",
+            text: exception,
+          });
+        });
+    },
+
+    formatarData(dataString) {
+      if (!dataString) return null;
+
+      var data = new Date(dataString);
+
+      return data.toLocaleString();
+    },
+  },
 };
 </script>

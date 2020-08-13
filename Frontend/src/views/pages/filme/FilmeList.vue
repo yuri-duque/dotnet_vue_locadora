@@ -1,6 +1,6 @@
 <template>
   <vs-card class="d-theme-dark-bg p-2">
-    <vs-table :data="users">
+    <vs-table :data="filmes">
       <template slot="header">
         <vs-row vs-type="flex" vs-justify="space-between" class="mb-6">
           <h3 class="mt-2">Filmes</h3>
@@ -29,28 +29,39 @@
 </template>
 
 <script>
+import api_filme from "@/api/api_filme";
+import utils from "@/assets/utils";
+
 export default {
   data: () => ({
-    users: [
-      {
-        id: 1,
-        titulo: "Filme 1 - update",
-        classificacaoIndicativa: 10,
-        lancamento: true,
-      },
-      {
-        id: 1,
-        titulo: "Filme 1 - update",
-        classificacaoIndicativa: 10,
-        lancamento: true,
-      },
-      {
-        id: 1,
-        titulo: "Filme 1 - update",
-        classificacaoIndicativa: 10,
-        lancamento: true,
-      },
-    ],
+    filmes: [],
   }),
+
+  created() {
+    this.getAll();
+  },
+
+  methods: {
+    getAll() {
+      this.$vs.loading();
+      api_filme
+        .getAll()
+        .then((response) => {
+          this.$vs.loading.close();
+
+          this.filmes = response.data;
+        })
+        .catch((error) => {
+          var exception = utils.getError(error);
+
+          this.$vs.loading.close();
+          this.$vs.notify({
+            color: "danger",
+            title: "Erro ao carregar as filmes!",
+            text: exception,
+          });
+        });
+    },
+  },
 };
 </script>
