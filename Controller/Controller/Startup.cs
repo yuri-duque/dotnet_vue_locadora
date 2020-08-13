@@ -57,7 +57,7 @@ namespace Controller
             app.UseCors(x =>
             {
                 x
-                .WithOrigins("http://localhost:8080")
+                .WithOrigins("http://localhost:8080", "https://yuri-duque-locadoura.netlify.app")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
