@@ -7,5 +7,17 @@ export default {
 
     getOptionsSelect() {
         return apiUtils.get("cliente/options-select");
+    },
+
+    salvar(data) {
+        return apiUtils.post("cliente", data);
+    },
+
+    editar(id, data) {
+        return apiUtils.put('cliente', data, id);
+    },
+
+    getById(id){
+        return apiUtils.get(`cliente/${id}`);
     }
 };

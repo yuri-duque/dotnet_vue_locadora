@@ -30,6 +30,13 @@ namespace Service.Models
             return listDTO;
         }
 
+        public ClienteDTO GetById(int id)
+        {
+            var cliente = _clienteRepository.Find(id);
+
+            return _mapper.Map<ClienteDTO>(cliente);
+        }
+
         public ClienteDTO Salvar(ClienteDTO clienteDTO)
         {
             var cliente = _clienteRepository.GetByCPF(clienteDTO.CPF);

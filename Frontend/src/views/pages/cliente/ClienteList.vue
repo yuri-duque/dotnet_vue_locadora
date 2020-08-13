@@ -85,7 +85,7 @@ export default {
 
       var data = new Date(dataString);
 
-      return data.toLocaleString();
+      return data.toLocaleDateString("pt-BR");
     },
 
     mascaraCPF(cpf) {
@@ -96,5 +96,11 @@ export default {
       return cpf;
     },
   },
+
+  watch:{
+    dataNascimento(newValue){
+      return this.formatarData(newValue);
+    }
+  }
 };
 </script>

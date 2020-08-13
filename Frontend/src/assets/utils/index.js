@@ -59,4 +59,20 @@ export default {
 
     return exception;
   },
+
+  formatarData(dataString) {
+    if (!dataString) return null;
+
+    var data = new Date(dataString);
+
+    return data.toLocaleString();
+  },
+
+  mascaraCPF(cpf) {
+    cpf = cpf.replace(/\D/g, "");
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    return cpf;
+  },
 }
