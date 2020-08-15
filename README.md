@@ -3,7 +3,7 @@
 
 Nesse projeto foi abordado o fluxo básico de uma locadoura, em que é possivel cadastrar um cliente, um livro e as locaçoes.
 
-## Configurando e executando
+## Configurando e executando o  backend
 
 Para inicializar o projeto é necessário ter as seguintes ferramentas:
 - Visual Studio 2019
@@ -23,14 +23,25 @@ Executando o projeto localmente:
   - Dentro do console iremos executar os comandos necessário para gerar o banco de dados
   - antes de executar os comandos verifique se o projeto "Repository" está selecionado no console como default project
 
-```bash
-update-database
-```
+  ```bash
+  update-database
+  ```
  
   - após a execução desse comando verifique se o banco foi criado corretamente
 - Com o banco já criado iremos executar a aplicação
   - pode ser usado a tecla "F5" para uma execução rapida, ou clicando no icone de play no menu superior
   - caso ocorra algum erro altere no menu superior de "Docker" para "ISS Express" e execute o projeto novamente
 
+## Configurando e executando o  backend
 
+O frontend pode ser executado de duas formas, uma rodando a aplicação em vue.js ou acessando a seguinte url: https://yuri-duque-locadoura.netlify.app/
+
+- executando projeto em vue.js
+  - abra no visual studio code a pasta "Frontend" que está na raiz do projeto
+  - execute os seguintes comandos
+  
+  ```bash
+  npm install
+  npm run serve
+  ```
 
