@@ -19,13 +19,22 @@
         </vs-col>
 
         <vs-col vs-lg="6" vs-sm="12" class="px-2 pt-2">
-          <span class="label-campo">Classificação indicativa</span>
-          <v-select
-            label="descricao"
-            v-model="selectClassificacao"
-            :options="optionsClassificacao"
-            class="display-inline-block mar-1"
-          ></v-select>
+          <div>
+            <span class="label-campo">Classificação indicativa</span>
+            <v-select
+              label="descricao"
+              v-model="selectClassificacao"
+              :options="optionsClassificacao"
+              class="display-inline-block mar-1"
+              :class="{'bordaErroSelect' : errors.has('selectClassificacao')}"
+              name="selectClassificacao"
+              v-validate="'required'"
+            ></v-select>
+          </div>
+          <span
+            class="pl-1 span-text-validation"
+            v-show="errors.has('selectClassificacao')"
+          >{{ errors.first('selectClassificacao') }}</span>
         </vs-col>
       </vs-row>
 
@@ -56,6 +65,10 @@ const dict = {
   custom: {
     titulo: {
       required: "O titulo é obrigatório!",
+    },
+
+    selectClassificacao: {
+      required: "A classificação indicativa obrigatória!",
     },
   },
 };
@@ -191,9 +204,7 @@ export default {
           if (response.data) {
             this.titulo = response.data.titulo;
 
-            var select = this.optionsClassificacao.filter(function (
-              item
-            ) {
+            var select = this.optionsClassificacao.filter(function (item) {
               return item.id == response.data.classificacaoIndicativa;
             });
 
