@@ -26,3 +26,19 @@
 
 // rtl
 @import "vuexy/rtl";
+
+.bordaErroSelect {
+  .vs__dropdown-toggle {
+    border: 1px solid rgba(var(--vs-danger), 1) !important;
+    border-radius: 4px;
+  }
+}
+
+.span-text-validation {
+  font-size: 10px;
+  color: red;
+}
+
+.span-text-validation-danger{
+  height: 21px !important;
+}

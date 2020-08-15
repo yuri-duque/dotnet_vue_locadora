@@ -7,23 +7,41 @@
     <div>
       <vs-row>
         <vs-col vs-lg="6" vs-sm="12" class="px-2 pt-2">
-          <span class="label-campo">Cliente</span>
-          <v-select
-            label="nome"
-            v-model="selectCliente"
-            :options="optionsClientes"
-            class="display-inline-block mar-1"
-          ></v-select>
+          <div>
+            <span class="label-campo">Cliente</span>
+            <v-select
+              label="nome"
+              v-model="selectCliente"
+              :options="optionsClientes"
+              class="display-inline-block mar-1"
+              :class="{'bordaErroSelect' : errors.has('selectCliente')}"
+              name="selectCliente"
+              v-validate="'required'"
+            ></v-select>
+          </div>
+          <span
+            class="pl-1 span-text-validation"
+            v-show="errors.has('selectCliente')"
+          >{{ errors.first('selectCliente') }}</span>
         </vs-col>
 
         <vs-col vs-lg="6" vs-sm="12" class="px-2 pt-2">
-          <span class="label-campo">Filme</span>
-          <v-select
-            label="titulo"
-            v-model="selectFilme"
-            :options="optionsFilmes"
-            class="display-inline-block mar-1"
-          ></v-select>
+          <div>
+            <span class="label-campo">Filme</span>
+            <v-select
+              label="titulo"
+              v-model="selectFilme"
+              :options="optionsFilmes"
+              :class="{'bordaErroSelect' : errors.has('selectFilme')}"
+              class="display-inline-block mar-1"
+              name="selectFilme"
+              v-validate="'required'"
+            ></v-select>
+          </div>
+          <span
+            class="pl-1 span-text-validation"
+            v-show="errors.has('selectFilme')"
+          >{{ errors.first('selectFilme') }}</span>
         </vs-col>
       </vs-row>
 
@@ -33,22 +51,20 @@
             label="Data de locação"
             v-model="dataLocacao"
             class="w-full"
+            :danger="erro_dataLocacao != null"
+            :danger-text="erro_dataLocacao"
           />
         </vs-col>
 
         <vs-col vs-lg="6" vs-sm="12" class="px-2 pt-2">
-          <vs-input
-            label="Data de devolução"
-            v-model="dataDevolucao"
-            class="w-full"
-          />
+          <vs-input label="Data de devolução" v-model="dataDevolucao" class="w-full" />
         </vs-col>
       </vs-row>
 
       <vs-row vs-type="flex" vs-justify="flex-end" class="mt-6 pr-2">
-        <vs-button v-if="!id" @click="submit" class="font-semibold" type="filled">Cadastrar</vs-button>
+        <vs-button v-if="!id" @click="validar" class="font-semibold" type="filled">Cadastrar</vs-button>
 
-        <vs-button v-if="id" @click="submit" class="font-semibold" type="filled">Editar</vs-button>
+        <vs-button v-if="id" @click="validar" class="font-semibold" type="filled">Editar</vs-button>
       </vs-row>
     </div>
   </vs-card>
@@ -61,10 +77,26 @@ import api_filme from "@/api/api_filme";
 import api_locacao from "@/api/api_locacao";
 import utils from "@/assets/utils";
 
+import { Validator } from "vee-validate";
+
+const dict = {
+  custom: {
+    selectCliente: {
+      required: "O Cliente é obrigatório!",
+    },
+
+    selectFilme: {
+      required: "O Filme é obrigatório!",
+    },
+  },
+};
+
+Validator.localize("en", dict);
+
 import {
   mascara_data,
   formatar_data,
-  formatar_data_ao_contrario
+  formatar_data_ao_contrario,
 } from "@/assets/utils/mask";
 
 export default {
@@ -83,8 +115,9 @@ export default {
       optionsFilmes: [],
 
       dataLocacao: null,
+      dataDevolucao: null,
 
-      dataDevolucao: null
+      erro_dataLocacao: null,
     };
   },
 
@@ -105,7 +138,7 @@ export default {
 
       const data = {
         idCliente: this.selectCliente.id,
-        idFilme: this.selectFilme.id
+        idFilme: this.selectFilme.id,
       };
 
       debugger;
@@ -139,7 +172,9 @@ export default {
         // EDITAR
         data.id = parseInt(this.id);
         data.dataLocacao = formatar_data(this.dataLocacao);
-        data.dataDevolucao = this.dataDevolucao ? formatar_data(this.dataDevolucao) : null;
+        data.dataDevolucao = this.dataDevolucao
+          ? formatar_data(this.dataDevolucao)
+          : null;
 
         api_locacao
           .editar(this.id, data)
@@ -164,6 +199,30 @@ export default {
               text: exception,
             });
           });
+      }
+    },
+
+    async validar() {
+      this.erro_dataLocacao = null;
+
+      var invalido = 0;
+
+      var result = await utils.validar(this.$validator);
+      if (!result) invalido++;
+
+      if(this.id && !this.dataLocacao){
+        this.erro_dataLocacao = "A data da locação é obrigatória!";
+        invalido++;
+      }
+
+      if (invalido == 0) {
+        this.submit();
+      } else {
+        this.$vs.notify({
+          color: "danger",
+          title: "Erro",
+          text: "Algum dos campos está com erro, verifique e tente novamente",
+        });
       }
     },
 
@@ -228,9 +287,13 @@ export default {
               titulo: response.data.filme.titulo,
             };
 
-            this.dataLocacao = formatar_data_ao_contrario(response.data.dataLocacao);
-            
-            this.dataDevolucao = response.data.dataDevolucao  ? formatar_data_ao_contrario(response.data.dataDevolucao) : null;
+            this.dataLocacao = formatar_data_ao_contrario(
+              response.data.dataLocacao
+            );
+
+            this.dataDevolucao = response.data.dataDevolucao
+              ? formatar_data_ao_contrario(response.data.dataDevolucao)
+              : null;
           } else {
             this.$vs.notify({
               color: "danger",
@@ -251,21 +314,21 @@ export default {
     },
   },
 
-  watch:{
-    dataLocacao(){
+  watch: {
+    dataLocacao() {
       var data = mascara_data(this.dataLocacao);
       if (this.dataLocacao != data) {
         this.dataLocacao = data;
       }
     },
 
-    dataDevolucao(){
+    dataDevolucao() {
       var data = mascara_data(this.dataDevolucao);
       if (this.dataDevolucao != data) {
         this.dataDevolucao = data;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
